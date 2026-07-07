@@ -1,0 +1,5 @@
+__pycache__/
+*.py[cod]
+.env
+allowed_user_id.txt
+morning_message_history.txt
