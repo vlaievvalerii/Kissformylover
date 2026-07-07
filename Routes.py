@@ -513,7 +513,7 @@ async def more_menu(message: Message):
 
 @router.message(F.text == "🫶 Підтримай мене")
 async def support(message: Message):
-    await message.answer(choice(SUPPORT_TEXTS), reply_markup=contact_keyboard())
+    await message.answer(choice(SUPPORT_TEXTS))
     await send_one_media(
         message,
         category="support",
@@ -529,7 +529,7 @@ async def compliment(message: Message):
 
 @router.message(F.text == "🤍 Обійми словами")
 async def hug(message: Message):
-    await message.answer(choice(HUGS), reply_markup=contact_keyboard())
+    await message.answer(choice(HUGS))
     await send_local_image(message, category="hug")
 
 
@@ -584,7 +584,7 @@ async def ask_write_inline(callback: CallbackQuery):
 @router.callback_query(F.data == "support")
 async def support_inline(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer(choice(SUPPORT_TEXTS), reply_markup=contact_keyboard())
+    await callback.message.answer(choice(SUPPORT_TEXTS))
     await send_one_media(
         callback.message,
         category="support",
@@ -595,7 +595,7 @@ async def support_inline(callback: CallbackQuery):
 @router.callback_query(F.data == "hug")
 async def hug_inline(callback: CallbackQuery):
     await callback.answer()
-    await callback.message.answer(choice(HUGS), reply_markup=contact_keyboard())
+    await callback.message.answer(choice(HUGS))
     await send_local_image(callback.message, category="hug")
 
 
@@ -624,7 +624,7 @@ async def mood_inline(callback: CallbackQuery):
     text = mood_map.get(callback.data)
     await callback.answer()
     if text:
-        await callback.message.answer(choice(MOOD_REPLIES[text]), reply_markup=contact_keyboard())
+        await callback.message.answer(choice(MOOD_REPLIES[text]))
         category = "angry" if callback.data == "mood_angry" else "support"
         await send_local_image(callback.message, category=category)
 
@@ -641,7 +641,7 @@ async def date_choice(callback: CallbackQuery):
 
 @router.message(F.text.in_(MOOD_REPLIES.keys()))
 async def mood(message: Message):
-    await message.answer(choice(MOOD_REPLIES[message.text]), reply_markup=contact_keyboard())
+    await message.answer(choice(MOOD_REPLIES[message.text]))
 
 
 @router.message(F.text)
