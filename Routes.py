@@ -392,6 +392,20 @@ async def notify_valera(message: Message, action: str, user=None) -> bool:
     return True
 
 
+async def forward_text_to_valera(message: Message) -> bool:
+    valera_id = valera_chat_id()
+    if not valera_id or is_valera(message.from_user.id):
+        return False
+
+    user = message.from_user
+    name = user.full_name if user else "Vona"
+    username = f"@{user.username}" if user and user.username else "bez username"
+    await message.bot.send_message(
+        chat_id=valera_id,
+        text=f"Message from {name} ({username}):\n\n{message.text}",
+    )
+    return True
+
 def seconds_until_next_morning() -> float:
     now = datetime.now()
     next_run = now.replace(
@@ -655,6 +669,7 @@ async def fallback(message: Message):
     if any(word in text for word in ["набери", "подзвони", "дзвони", "набрати"]):
         await ask_call(message)
         return
+    await forward_text_to_valera(message)
 
     await message.answer(
         "Я почув. Вибери кнопку нижче, так буде швидше.",
