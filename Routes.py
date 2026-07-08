@@ -178,7 +178,7 @@ class AccessMiddleware(BaseMiddleware):
         user = data.get("event_from_user")
         allowed_id = allowed_user_id()
 
-        if not user or not allowed_id or user.id == allowed_id:
+        if not user or not allowed_id or user.id == allowed_id or is_valera(user.id):
             return await handler(event, data)
 
         if isinstance(event, Message):
