@@ -1,8 +1,6 @@
 import asyncio
 from datetime import datetime, timedelta
-from os import getenv
 from pathlib import Path
-from dotenv import load_dotenv
 from random import choice
 
 from aiogram import BaseMiddleware, F, Router
@@ -17,12 +15,10 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
 )
 
-load_dotenv()
-VALERA_CHAT_ID = getenv("VALERA_CHAT_ID")
-ALLOWED_USER_ID = getenv("ALLOWED_USER_ID")
-MORNING_MESSAGE_HOUR = int(getenv("MORNING_MESSAGE_HOUR", "6"))
-MORNING_MESSAGE_MINUTE = int(getenv("MORNING_MESSAGE_MINUTE", "50"))
-ALLOWED_USER_FILE = Path(__file__).with_name("allowed_user_id.txt")
+VALERA_CHAT_ID = 460158653
+ALLOWED_USER_ID = 930150115
+MORNING_MESSAGE_HOUR = 6
+MORNING_MESSAGE_MINUTE = 50
 MORNING_HISTORY_FILE = Path(__file__).with_name("morning_message_history.txt")
 MORNING_REPEAT_DAYS = 7
 IMAGES_DIR = Path(__file__).with_name("images")
@@ -159,33 +155,14 @@ router = Router()
 
 
 def allowed_user_id() -> int | None:
-    raw_id = ALLOWED_USER_ID
-
-    if not raw_id and ALLOWED_USER_FILE.exists():
-        raw_id = ALLOWED_USER_FILE.read_text(encoding="utf-8").strip()
-
-    if not raw_id:
+    if is_valera(ALLOWED_USER_ID):
         return None
 
-    try:
-        user_id = int(raw_id)
-    except ValueError:
-        return None
-
-    if is_valera(user_id):
-        return None
-
-    return user_id
+    return ALLOWED_USER_ID
 
 
 def valera_chat_id() -> int | None:
-    if not VALERA_CHAT_ID:
-        return None
-
-    try:
-        return int(VALERA_CHAT_ID)
-    except ValueError:
-        return None
+    return VALERA_CHAT_ID
 
 
 def is_valera(user_id: int) -> bool:
@@ -193,14 +170,7 @@ def is_valera(user_id: int) -> bool:
 
 
 def remember_first_user(user_id: int) -> bool:
-    if is_valera(user_id):
-        return False
-
-    if allowed_user_id() is not None:
-        return False
-
-    ALLOWED_USER_FILE.write_text(str(user_id), encoding="utf-8")
-    return True
+    return False
 
 
 class AccessMiddleware(BaseMiddleware):
@@ -379,7 +349,7 @@ async def send_surprise_media(message: Message) -> None:
 
 async def notify_valera(message: Message, action: str, user=None) -> bool:
     if not VALERA_CHAT_ID:
-        await message.answer("Я хотів передати, але VALERA_CHAT_ID ще не налаштований у .env.")
+        await message.answer("Я хотів передати, але VALERA_CHAT_ID не налаштований у коді.")
         return False
 
     user = user or message.from_user
