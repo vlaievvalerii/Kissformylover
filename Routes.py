@@ -17,8 +17,8 @@ from aiogram.types import (
 
 VALERA_CHAT_ID = 460158653
 ALLOWED_USER_ID = 930150115
-MORNING_MESSAGE_HOUR = 6
-MORNING_MESSAGE_MINUTE = 50
+MORNING_MESSAGE_HOUR = 4
+MORNING_MESSAGE_MINUTE = 59
 MORNING_HISTORY_FILE = Path(__file__).with_name("morning_message_history.txt")
 MORNING_REPEAT_DAYS = 7
 IMAGES_DIR = Path(__file__).with_name("images")
