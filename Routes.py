@@ -20,10 +20,12 @@ ALLOWED_USER_ID = 930150115
 MORNING_MESSAGE_HOUR = 4
 MORNING_MESSAGE_MINUTE = 59
 MORNING_HISTORY_FILE = Path(__file__).with_name("morning_message_history.txt")
+MORNING_SETTINGS_FILE = Path(__file__).with_name("morning_messages_enabled.txt")
 MORNING_REPEAT_DAYS = 7
 IMAGES_DIR = Path(__file__).with_name("images")
 IMAGE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp", ".gif"}
 IMAGE_KEYWORDS = {
+    "morning": ["belive", "believe", "worry", "proud", "pushing", "love you"],
     "support": ["belive", "believe", "worry", "can do", "proud", "pushing", "pinky"],
     "hug": ["hug", "take me with you"],
     "compliment": ["love you", "this much", "proud", "romantic", "tastyy"],
@@ -62,6 +64,10 @@ SUPPORT_TEXTS = [
     "Сьогодні можна бути не ідеальною. Просто побудь трохи до себе добрішою.",
     "Я тебе почув. Все не обов'язково має бути добре прямо зараз.",
     "Давай без паніки. Один крок, потім ще один. Ти справишся.",
+    "Не поспішай збирати себе докупи. Можна просто трохи побути й перевести подих.",
+    "Я поруч. Розкажеш, коли захочеш, а поки просто бережи себе.",
+    "Сьогодні достатньо зробити стільки, скільки вистачає сил. Не більше.",
+    "Якщо день важкий — це не означає, що з тобою щось не так.",
 ]
 
 COMPLIMENTS = [
@@ -73,6 +79,10 @@ COMPLIMENTS = [
     "Ти класна. І я не перебільшую.",
     "У тебе дуже гарні очі. Так, це треба було сказати.",
     "Ти виглядаєш як людина, яку хочеться берегти.",
+    "Мені дуже подобається, як ти думаєш і помічаєш дрібниці.",
+    "З тобою навіть звичайний день відчувається особливим.",
+    "Ти неймовірно мила, особливо коли сама цього не помічаєш.",
+    "У тобі є щось дуже рідне й затишне.",
 ]
 
 HUGS = [
@@ -80,6 +90,9 @@ HUGS = [
     "Тримай обійми в чаті. Я старався зробити їх теплими.",
     "Підійди подумки ближче. Все, обійняв.",
     "Я б зараз просто посидів поруч і дав тобі відпочити.",
+    "Іди до мене. Обійму міцно й нікуди не відпущу кілька хвилин.",
+    "Уяви, що я поруч, накрив тебе пледом і тихенько обійняв.",
+    "Тримай великі теплі обійми. Саме такі, як тобі зараз треба.",
 ]
 
 SURPRISES = [
@@ -88,6 +101,9 @@ SURPRISES = [
     "Нагадування: ти не занадто емоційна. Ти жива.",
     "Твій план на 10 хвилин: видихнути і не сварити себе.",
     "Сьогодні офіційно можна хотіти уваги.",
+    "Термінове повідомлення: я скучив і хочу тебе обійняти.",
+    "Маленький сюрприз: сьогодні я люблю тебе ще сильніше, ніж учора.",
+    "Обери собі щось смачне — сьогодні це обов'язкова частина плану.",
 ]
 
 MORNING_MESSAGES = [
@@ -121,26 +137,66 @@ MORNING_MESSAGES = [
     "Ранок каже: час бути до себе трохи добрішою.",
     "Доброго ранку. Я вірю, що сьогодні в тебе вийде більше, ніж здається.",
     "Хай цей день не кусається. А якщо буде - я на твоєму боці.",
+    "Доброго ранку, сонечко. Сподіваюсь, ти виспалась і сьогодні матимеш хороший день.",
+    "Прокидайся, красуне. Нехай ранок буде спокійним, а настрій — теплим.",
+    "Доброго ранку. Не забудь поснідати й узяти з собою гарний настрій. Люблю тебе.",
+    "Нехай сьогодні все складається легко. А ввечері обов'язково розкажеш мені про свій день.",
+    "Доброго ранку, моя хороша. Бажаю тобі сил, спокою і приємних людей поруч.",
+    "Я просто хотів нагадати зранку, що ти в мене найкраща. Гарного тобі дня.",
+    "Прокидайся потихеньку. Я вже думаю про тебе й дуже хочу, щоб ти сьогодні усміхалась.",
+    "Доброго ранку, кохана. Нехай сьогодні станеться щось маленьке, але дуже приємне.",
+    "Бажаю тобі теплого ранку, смачної кави й дня без зайвих переживань.",
+    "Новий день почався, а я знову радий, що ти є в моєму житті. Доброго ранку.",
 ]
 
 MOOD_REPLIES = {
     "😔 Мені сумно": [
         "Іди сюди. Сумно - це не соромно. Я побуду поруч.",
         "Мені шкода, що так. Давай без тиску: просто переживемо цей момент.",
+        "Я поруч, моя хороша. Не треба зараз удавати, що все нормально.",
+        "Хочеш — розкажи мені все. Не хочеш — просто побудемо разом.",
+        "Обіймаю тебе. Цей настрій мине, а я нікуди не подінусь.",
     ],
     "😤 Я злюсь": [
         "Маєш право злитися. Серйозно. Спочатку видих, потім уже рішення.",
         "Не тримай все в собі. Злість теж щось хоче сказати.",
+        "Розповідай, хто тебе розізлив. Я уважно слухаю.",
+        "Твоя злість має причину. Давай спокійно розберемося разом.",
+        "Зараз нічого не вирішуй на емоціях. Видихни, я з тобою.",
     ],
     "🫠 Я втомилась": [
         "Тоді режим тиші й відпочинку. Ніяких подвигів сьогодні.",
         "Втомилась - значить треба відновитись, а не добивати себе.",
+        "Відклади все, що може почекати. Тобі справді треба відпочити.",
+        "Іди полеж трохи, моя хороша. Решта справ нікуди не втече.",
+        "Ти сьогодні вже достатньо зробила. Тепер час подбати про себе.",
     ],
     "🥺 Хочу уваги": [
         "Хочу уваги - це нормальна фраза. Ти не просиш забагато.",
         "Прийняв. Тобі зараз треба трохи тепла і щоб тебе не ігнорили.",
+        "Уся моя увага зараз твоя. Розповідай, чого тобі хочеться.",
+        "Іди сюди, я вже поруч. Можу слухати, обіймати й нагадувати, яка ти гарна.",
+        "Ти заслуговуєш на увагу без жодних пояснень. Я тут.",
     ],
 }
+
+CALL_SENT_REPLIES = [
+    "Передав. Він уже знає, що ти хочеш почути його голос.",
+    "Готово, попросив його тобі зателефонувати.",
+    "Передав прохання. Чекай на дзвінок 🤍",
+]
+
+WRITE_SENT_REPLIES = [
+    "Передав. Він уже знає, що ти чекаєш на повідомлення.",
+    "Готово, попросив його тобі написати.",
+    "Прохання передано. Скоро він з'явиться в чаті 🤍",
+]
+
+DATE_SENT_REPLIES = [
+    "Передав. Звучить як дуже хороший план.",
+    "Він уже знає. Сподіваюсь, скоро домовитесь 🤍",
+    "Готово, ідею побачення передано.",
+]
 
 DATE_IDEAS = {
     "date_walk": ("хоче з тобою погуляти", "Побачення: прогулянка 🚶‍♀️"),
@@ -257,10 +313,16 @@ async def notify_button_press(event, user) -> None:
 
 
 def main_keyboard() -> ReplyKeyboardMarkup:
+    morning_button = (
+        "🌅 Ранкові: увімкнені"
+        if morning_messages_enabled()
+        else "🌙 Ранкові: вимкнені"
+    )
     return ReplyKeyboardMarkup(
         keyboard=[
             [KeyboardButton(text="🫶 Підтримка"), KeyboardButton(text="📞 Зв'язок")],
             [KeyboardButton(text="💕 Побачення"), KeyboardButton(text="✨ Ще")],
+            [KeyboardButton(text=morning_button)],
         ],
         resize_keyboard=True,
         input_field_placeholder="Що тобі зараз хочеться?",
@@ -475,6 +537,17 @@ def choose_morning_message() -> str:
     return choice(available)
 
 
+def morning_messages_enabled() -> bool:
+    if not MORNING_SETTINGS_FILE.exists():
+        return True
+
+    return MORNING_SETTINGS_FILE.read_text(encoding="utf-8").strip() != "0"
+
+
+def set_morning_messages_enabled(enabled: bool) -> None:
+    MORNING_SETTINGS_FILE.write_text("1" if enabled else "0", encoding="utf-8")
+
+
 async def morning_messages_loop(bot) -> None:
     while True:
         await asyncio.sleep(seconds_until_next_morning())
@@ -484,24 +557,49 @@ async def morning_messages_loop(bot) -> None:
             await asyncio.sleep(300)
             continue
 
+        if not morning_messages_enabled():
+            continue
+
         text = choose_morning_message()
 
         try:
-            await bot.send_message(
-                chat_id=chat_id,
-                text=text,
-                disable_notification=True,
-            )
+            images = local_images("morning")
+            if images:
+                await bot.send_photo(
+                    chat_id=chat_id,
+                    photo=FSInputFile(choice(images)),
+                    caption=text,
+                    disable_notification=True,
+                )
+            else:
+                await bot.send_message(
+                    chat_id=chat_id,
+                    text=text,
+                    disable_notification=True,
+                )
             remember_morning_message(text)
 
             valera_id = valera_chat_id()
             if valera_id:
                 await bot.send_message(
                     chat_id=valera_id,
-                    text=text,
+                    text="✅ Ранкове повідомлення доставлено — бот активний.\n\n" + text,
                     disable_notification=True,
                 )
-        except Exception:
+        except Exception as error:
+            valera_id = valera_chat_id()
+            if valera_id:
+                try:
+                    await bot.send_message(
+                        chat_id=valera_id,
+                        text=(
+                            "⚠️ Не вдалося доставити ранкове повідомлення. "
+                            "Можливо, користувач заблокував бота або Telegram недоступний.\n"
+                            f"Помилка: {type(error).__name__}"
+                        ),
+                    )
+                except Exception:
+                    pass
             await asyncio.sleep(300)
 
 
@@ -551,6 +649,30 @@ async def more_menu(message: Message):
     await message.answer("Тримай ще трохи приємного.", reply_markup=more_keyboard())
 
 
+@router.message(F.text.in_({"🌅 Ранкові: увімкнені", "🌙 Ранкові: вимкнені"}))
+async def toggle_morning_messages(message: Message):
+    enabled = not morning_messages_enabled()
+    set_morning_messages_enabled(enabled)
+
+    status = "увімкнула" if enabled else "вимкнула"
+    await message.answer(
+        f"Ранкові повідомлення {status}.",
+        reply_markup=main_keyboard(),
+    )
+
+    if valera_chat_id():
+        user = message.from_user
+        name = user.full_name if user else "Вона"
+        username = f"@{user.username}" if user and user.username else "без username"
+        try:
+            await message.bot.send_message(
+                chat_id=valera_chat_id(),
+                text=f"🌅 {name} ({username}) {status} ранкові повідомлення.",
+            )
+        except Exception:
+            pass
+
+
 @router.message(F.text == "🫶 Підтримай мене")
 async def support(message: Message):
     await message.answer(choice(SUPPORT_TEXTS))
@@ -583,7 +705,7 @@ async def surprise(message: Message):
 async def ask_call(message: Message):
     sent = await notify_valera(message, "набрати")
     if sent:
-        await message.answer("Передав. Можеш поки видихнути.")
+        await message.answer(choice(CALL_SENT_REPLIES))
         await send_local_image(message, category="miss")
 
 
@@ -591,7 +713,7 @@ async def ask_call(message: Message):
 async def ask_write(message: Message):
     sent = await notify_valera(message, "написати")
     if sent:
-        await message.answer("Передав. Тепер він точно побачить.")
+        await message.answer(choice(WRITE_SENT_REPLIES))
         await send_local_image(message, category="miss")
 
 
@@ -608,7 +730,7 @@ async def ask_call_inline(callback: CallbackQuery):
     sent = await notify_valera(callback.message, "набрати", callback.from_user)
     await callback.answer("Передав" if sent else "Не налаштовано")
     if sent:
-        await callback.message.answer("Передав прохання набрати.")
+        await callback.message.answer(choice(CALL_SENT_REPLIES))
         await send_local_image(callback.message, category="miss")
 
 
@@ -617,7 +739,7 @@ async def ask_write_inline(callback: CallbackQuery):
     sent = await notify_valera(callback.message, "написати", callback.from_user)
     await callback.answer("Передав" if sent else "Не налаштовано")
     if sent:
-        await callback.message.answer("Передав прохання написати.")
+        await callback.message.answer(choice(WRITE_SENT_REPLIES))
         await send_local_image(callback.message, category="miss")
 
 
@@ -675,7 +797,7 @@ async def date_choice(callback: CallbackQuery):
     sent = await notify_valera(callback.message, action, callback.from_user)
     await callback.answer("Передав" if sent else "Не налаштовано")
     if sent:
-        await callback.message.answer(f"{title}\nПередав. Звучить добре.")
+        await callback.message.answer(f"{title}\n{choice(DATE_SENT_REPLIES)}")
         await send_local_image(callback.message, category=callback.data)
 
 
