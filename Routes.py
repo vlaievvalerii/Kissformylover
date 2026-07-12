@@ -178,7 +178,11 @@ class AccessMiddleware(BaseMiddleware):
         user = data.get("event_from_user")
         allowed_id = allowed_user_id()
 
-        if not user or not allowed_id or user.id == allowed_id or is_valera(user.id):
+        if user and allowed_id and user.id == allowed_id:
+            await notify_button_press(event, user)
+            return await handler(event, data)
+
+        if not user or not allowed_id or is_valera(user.id):
             return await handler(event, data)
 
         if isinstance(event, Message):
@@ -198,6 +202,58 @@ class AccessMiddleware(BaseMiddleware):
 
 router.message.middleware(AccessMiddleware())
 router.callback_query.middleware(AccessMiddleware())
+
+
+CALLBACK_BUTTON_NAMES = {
+    "support": "🫶 Підтримай",
+    "hug": "🤍 Обійми",
+    "mood_sad": "😔 Сумно",
+    "mood_tired": "🫠 Втомилась",
+    "mood_angry": "😤 Злюсь",
+    "mood_attention": "🥺 Хочу уваги",
+    "compliment": "✨ Комплімент",
+    "surprise": "🎁 Сюрприз",
+}
+
+REPLY_BUTTON_NAMES = {
+    "🫶 Підтримка",
+    "📞 Зв'язок",
+    "💕 Побачення",
+    "✨ Ще",
+    "🫶 Підтримай мене",
+    "✨ Комплімент",
+    "🤍 Обійми словами",
+    "🎁 Сюрприз",
+    "💕 Режим побачення",
+    *MOOD_REPLIES.keys(),
+}
+
+
+async def notify_button_press(event, user) -> None:
+    """Notify Valera about buttons which do not already send a notification."""
+    button_name = None
+    bot = None
+
+    if isinstance(event, CallbackQuery):
+        button_name = CALLBACK_BUTTON_NAMES.get(event.data)
+        bot = event.bot
+    elif isinstance(event, Message) and event.text in REPLY_BUTTON_NAMES:
+        button_name = event.text
+        bot = event.bot
+
+    if not button_name or not bot or not valera_chat_id():
+        return
+
+    name = user.full_name
+    username = f"@{user.username}" if user.username else "без username"
+    try:
+        await bot.send_message(
+            chat_id=valera_chat_id(),
+            text=f"{name} ({username}) натиснула: {button_name}",
+        )
+    except Exception:
+        # A notification failure must not stop the bot from answering her.
+        pass
 
 
 def main_keyboard() -> ReplyKeyboardMarkup:
