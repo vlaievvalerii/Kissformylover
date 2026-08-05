@@ -1,0 +1,16 @@
+[Unit]
+Description=Kiss For My Lover Telegram Bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/kissformylover
+ExecStart=/home/ubuntu/kissformylover/.venv/bin/python /home/ubuntu/kissformylover/Main.py
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target
