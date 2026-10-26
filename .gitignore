@@ -14,3 +14,12 @@ venv/
 allowed_user_id.txt
 morning_message_history.txt
 morning_messages_enabled.txt
+*.key
+*.pub
+ssh-keys/
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.tmp
+*.bak
